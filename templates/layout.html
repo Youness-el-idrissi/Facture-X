@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Factur-X Editor</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --warning-gradient: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+        --dark-bg: #1a1d29;
+        --card-bg: #242837;
+        --card-border: #2d3148;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a3b1;
+        --input-bg: #1e2233;
+        --input-border: #3d4263;
+      }
+
+      * {
+        font-family: 'Inter', sans-serif;
+      }
+
+      body {
+        background: var(--dark-bg);
+        min-height: 100vh;
+        color: var(--text-primary);
+      }
+
+      /* Navbar */
+      .navbar-custom {
+        background: rgba(36, 40, 55, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--card-border);
+        padding: 1rem 0;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .navbar-brand i {
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Main container */
+      .main-container {
+        padding: 2rem 0;
+      }
+
+      /* Cards */
+      .custom-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .custom-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .card-header-gradient {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--card-border);
+      }
+
+      .card-header-gradient.primary {
+        background: var(--primary-gradient);
+      }
+
+      .card-header-gradient.success {
+        background: var(--success-gradient);
+      }
+
+      .card-header-gradient.info {
+        background: var(--info-gradient);
+      }
+
+      .card-header-gradient.warning {
+        background: var(--warning-gradient);
+      }
+
+      .card-header-gradient h5 {
+        margin: 0;
+        font-weight: 600;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .card-body-custom {
+        padding: 1.5rem;
+      }
+
+      /* Form controls */
+      .form-label {
+        font-weight: 500;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-control {
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        border-radius: 10px;
+        color: var(--text-primary);
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        background: var(--input-bg);
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+        color: var(--text-primary);
+      }
+
+      .form-control::placeholder {
+        color: #6c7293;
+      }
+
+      /* Buttons */
+      .btn-gradient {
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        color: white;
+      }
+
+      .btn-gradient.primary {
+        background: var(--primary-gradient);
+      }
+
+      .btn-gradient.success {
+        background: var(--success-gradient);
+      }
+
+      .btn-gradient.info {
+        background: var(--info-gradient);
+      }
+
+      .btn-gradient.warning {
+        background: var(--warning-gradient);
+      }
+
+      .btn-gradient.secondary {
+        background: linear-gradient(135deg, #434a5e 0%, #5a6178 100%);
+      }
+
+      .btn-outline-custom {
+        background: transparent;
+        border: 2px solid var(--card-border);
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-outline-custom:hover {
+        background: var(--card-bg);
+        border-color: #667eea;
+        color: var(--text-primary);
+      }
+
+      /* Alerts */
+      .alert-custom {
+        border: none;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .alert-success {
+        background: rgba(17, 153, 142, 0.2);
+        color: #38ef7d;
+      }
+
+      .alert-danger {
+        background: rgba(245, 87, 108, 0.2);
+        color: #f5576c;
+      }
+
+      .alert-warning {
+        background: rgba(247, 151, 30, 0.2);
+        color: #ffd200;
+      }
+
+      .alert-info {
+        background: rgba(79, 172, 254, 0.2);
+        color: #4facfe;
+      }
+
+      /* File upload */
+      .upload-zone {
+        border: 2px dashed var(--input-border);
+        border-radius: 16px;
+        padding: 3rem;
+        text-align: center;
+        background: var(--input-bg);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .upload-zone:hover {
+        border-color: #667eea;
+        background: rgba(102, 126, 234, 0.1);
+      }
+
+      .upload-zone i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .upload-zone h4 {
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+      }
+
+      .upload-zone p {
+        color: var(--text-secondary);
+        margin: 0;
+      }
+
+      /* Badge */
+      .badge-custom {
+        background: var(--primary-gradient);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.85rem;
+      }
+
+      /* Page title */
+      .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+      }
+
+      /* Textarea */
+      textarea.form-control {
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 0.85rem;
+        line-height: 1.6;
+      }
+
+      /* Action buttons row */
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+
+      /* Footer */
+      .footer-custom {
+        text-align: center;
+        padding: 2rem 0;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease forwards;
+      }
+
+      /* Input group */
+      .input-icon {
+        position: relative;
+      }
+
+      .input-icon i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+      }
+
+      .input-icon .form-control {
+        padding-left: 2.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-custom">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+          <i class="fas fa-file-invoice me-2"></i>Factur-X Editor
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container main-container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-custom alert-dismissible fade show fade-in" role="alert">
+              {% if category == 'success' %}
+                <i class="fas fa-check-circle"></i>
+              {% elif category == 'danger' %}
+                <i class="fas fa-exclamation-circle"></i>
+              {% elif category == 'warning' %}
+                <i class="fas fa-exclamation-triangle"></i>
+              {% else %}
+                <i class="fas fa-info-circle"></i>
+              {% endif %}
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-custom">
+      <div class="container">
+        <p>&copy; 2025 Factur-X Editor - Outil de modification de factures XML</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

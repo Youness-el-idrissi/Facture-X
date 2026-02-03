@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center fade-in">
+  <div class="col-lg-8">
+    <!-- Header -->
+    <div class="text-center mb-5">
+      <h1 class="page-title">Modifier une facture Factur-X</h1>
+      <p class="page-subtitle">Importez votre PDF pour extraire et modifier les donnees XML de facturation</p>
+    </div>
+
+    <!-- Upload Card -->
+    <div class="custom-card">
+      <div class="card-header-gradient primary">
+        <h5><i class="fas fa-cloud-upload-alt"></i> Importer un fichier PDF</h5>
+      </div>
+      <div class="card-body-custom">
+        <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" id="uploadForm">
+          <div class="upload-zone" id="uploadZone">
+            <i class="fas fa-file-pdf"></i>
+            <h4>Glissez votre fichier PDF ici</h4>
+            <p>ou cliquez pour selectionner un fichier</p>
+            <input type="file" id="pdf" name="pdf" accept=".pdf" required style="display: none;">
+          </div>
+
+          <div id="fileInfo" class="mt-3" style="display: none;">
+            <div class="d-flex align-items-center justify-content-between p-3" style="background: var(--input-bg); border-radius: 10px;">
+              <div class="d-flex align-items-center gap-3">
+                <i class="fas fa-file-pdf fa-2x" style="color: #f5576c;"></i>
+                <div>
+                  <div class="fw-semibold" id="fileName">-</div>
+                  <small class="text-secondary" id="fileSize">-</small>
+                </div>
+              </div>
+              <button type="button" class="btn-outline-custom" id="removeFile">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <button type="submit" class="btn-gradient primary w-100" id="submitBtn" disabled>
+              <i class="fas fa-magic"></i> Extraire le XML de la facture
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="custom-card h-100">
+          <div class="card-body-custom text-center">
+            <i class="fas fa-shield-alt fa-2x mb-3" style="color: #38ef7d;"></i>
+            <h6>Securise</h6>
+            <small class="text-secondary">Vos fichiers restent sur votre machine</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="custom-card h-100">
+          <div class="card-body-custom text-center">
+            <i class="fas fa-bolt fa-2x mb-3" style="color: #ffd200;"></i>
+            <h6>Rapide</h6>
+            <small class="text-secondary">Extraction instantanee du XML</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="custom-card h-100">
+          <div class="card-body-custom text-center">
+            <i class="fas fa-edit fa-2x mb-3" style="color: #4facfe;"></i>
+            <h6>Simple</h6>
+            <small class="text-secondary">Interface intuitive de modification</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const uploadZone = document.getElementById('uploadZone');
+  const fileInput = document.getElementById('pdf');
+  const fileInfo = document.getElementById('fileInfo');
+  const fileName = document.getElementById('fileName');
+  const fileSize = document.getElementById('fileSize');
+  const removeFile = document.getElementById('removeFile');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // Click to select file
+  uploadZone.addEventListener('click', () => fileInput.click());
+
+  // Drag and drop
+  uploadZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = '#667eea';
+    uploadZone.style.background = 'rgba(102, 126, 234, 0.1)';
+  });
+
+  uploadZone.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = '';
+    uploadZone.style.background = '';
+  });
+
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = '';
+    uploadZone.style.background = '';
+    const files = e.dataTransfer.files;
+    if (files.length > 0 && files[0].type === 'application/pdf') {
+      fileInput.files = files;
+      showFileInfo(files[0]);
+    }
+  });
+
+  // File selected
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      showFileInfo(e.target.files[0]);
+    }
+  });
+
+  function showFileInfo(file) {
+    fileName.textContent = file.name;
+    fileSize.textContent = formatFileSize(file.size);
+    uploadZone.style.display = 'none';
+    fileInfo.style.display = 'block';
+    submitBtn.disabled = false;
+  }
+
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  // Remove file
+  removeFile.addEventListener('click', () => {
+    fileInput.value = '';
+    uploadZone.style.display = 'block';
+    fileInfo.style.display = 'none';
+    submitBtn.disabled = true;
+  });
+</script>
+{% endblock %}

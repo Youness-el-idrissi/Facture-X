@@ -1,0 +1,274 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="fade-in">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="page-title">Modifier la facture</h1>
+      <p class="page-subtitle">
+        <i class="fas fa-file-code me-2"></i>{{ xml_name }}
+      </p>
+    </div>
+    <span class="badge-custom">
+      <i class="fas fa-edit me-1"></i> Mode edition
+    </span>
+  </div>
+
+  <form method="post" action="{{ url_for('save_form') }}">
+    <!-- Invoice Info -->
+    <div class="custom-card mb-4">
+      <div class="card-header-gradient primary">
+        <h5><i class="fas fa-file-invoice"></i> Informations de la facture</h5>
+      </div>
+      <div class="card-body-custom">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="invoice_number" class="form-label">
+              <i class="fas fa-hashtag me-1"></i> Numero de facture
+            </label>
+            <input type="text" class="form-control" id="invoice_number" name="invoice_number"
+                   value="{{ data.invoice_number }}" placeholder="FAC-2025-001">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="invoice_date" class="form-label">
+              <i class="fas fa-calendar me-1"></i> Date de facture
+            </label>
+            <input type="text" class="form-control" id="invoice_date" name="invoice_date"
+                   value="{{ data.invoice_date }}" placeholder="YYYYMMDD">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="due_date" class="form-label">
+              <i class="fas fa-calendar-check me-1"></i> Date d'echeance
+            </label>
+            <input type="text" class="form-control" id="due_date" name="due_date"
+                   value="{{ data.due_date }}" placeholder="YYYYMMDD">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seller Info -->
+    <div class="custom-card mb-4">
+      <div class="card-header-gradient success">
+        <h5><i class="fas fa-store"></i> Vendeur (Seller)</h5>
+      </div>
+      <div class="card-body-custom">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="seller_name" class="form-label">
+              <i class="fas fa-building me-1"></i> Nom / Raison sociale
+            </label>
+            <input type="text" class="form-control" id="seller_name" name="seller_name"
+                   value="{{ data.seller_name }}" placeholder="Nom de l'entreprise">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label for="seller_siren" class="form-label">
+              <i class="fas fa-id-card me-1"></i> SIREN / SIRET
+            </label>
+            <input type="text" class="form-control" id="seller_siren" name="seller_siren"
+                   value="{{ data.seller_siren }}" placeholder="123456789">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label for="seller_vat" class="form-label">
+              <i class="fas fa-percent me-1"></i> N° TVA
+            </label>
+            <input type="text" class="form-control" id="seller_vat" name="seller_vat"
+                   value="{{ data.seller_vat }}" placeholder="FR12345678901">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="seller_street" class="form-label">
+              <i class="fas fa-map-marker-alt me-1"></i> Adresse
+            </label>
+            <input type="text" class="form-control" id="seller_street" name="seller_street"
+                   value="{{ data.seller_street }}" placeholder="123 Rue Example">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="seller_postal_code" class="form-label">
+              <i class="fas fa-mail-bulk me-1"></i> Code postal
+            </label>
+            <input type="text" class="form-control" id="seller_postal_code" name="seller_postal_code"
+                   value="{{ data.seller_postal_code }}" placeholder="75001">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="seller_city" class="form-label">
+              <i class="fas fa-city me-1"></i> Ville
+            </label>
+            <input type="text" class="form-control" id="seller_city" name="seller_city"
+                   value="{{ data.seller_city }}" placeholder="Paris">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="seller_country" class="form-label">
+              <i class="fas fa-globe me-1"></i> Pays
+            </label>
+            <input type="text" class="form-control" id="seller_country" name="seller_country"
+                   value="{{ data.seller_country }}" placeholder="FR">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="seller_fe_address" class="form-label">
+              <i class="fas fa-at me-1"></i> Adresse FE (Facturation Electronique BT-34)
+            </label>
+            <input type="text" class="form-control" id="seller_fe_address" name="seller_fe_address"
+                   value="{{ data.seller_fe_address }}" placeholder="0009:12345678901234">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buyer Info -->
+    <div class="custom-card mb-4">
+      <div class="card-header-gradient info">
+        <h5><i class="fas fa-user-tie"></i> Acheteur (Buyer)</h5>
+      </div>
+      <div class="card-body-custom">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="buyer_name" class="form-label">
+              <i class="fas fa-building me-1"></i> Nom / Raison sociale
+            </label>
+            <input type="text" class="form-control" id="buyer_name" name="buyer_name"
+                   value="{{ data.buyer_name }}" placeholder="Nom du client">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label for="buyer_siren" class="form-label">
+              <i class="fas fa-id-card me-1"></i> SIREN / SIRET
+            </label>
+            <input type="text" class="form-control" id="buyer_siren" name="buyer_siren"
+                   value="{{ data.buyer_siren }}" placeholder="987654321">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label for="buyer_vat" class="form-label">
+              <i class="fas fa-percent me-1"></i> N° TVA
+            </label>
+            <input type="text" class="form-control" id="buyer_vat" name="buyer_vat"
+                   value="{{ data.buyer_vat }}" placeholder="FR98765432109">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="buyer_street" class="form-label">
+              <i class="fas fa-map-marker-alt me-1"></i> Adresse
+            </label>
+            <input type="text" class="form-control" id="buyer_street" name="buyer_street"
+                   value="{{ data.buyer_street }}" placeholder="456 Avenue Client">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="buyer_postal_code" class="form-label">
+              <i class="fas fa-mail-bulk me-1"></i> Code postal
+            </label>
+            <input type="text" class="form-control" id="buyer_postal_code" name="buyer_postal_code"
+                   value="{{ data.buyer_postal_code }}" placeholder="69001">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="buyer_city" class="form-label">
+              <i class="fas fa-city me-1"></i> Ville
+            </label>
+            <input type="text" class="form-control" id="buyer_city" name="buyer_city"
+                   value="{{ data.buyer_city }}" placeholder="Lyon">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="buyer_country" class="form-label">
+              <i class="fas fa-globe me-1"></i> Pays
+            </label>
+            <input type="text" class="form-control" id="buyer_country" name="buyer_country"
+                   value="{{ data.buyer_country }}" placeholder="FR">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="buyer_fe_address" class="form-label">
+              <i class="fas fa-at me-1"></i> Adresse FE (Facturation Electronique BT-49)
+            </label>
+            <input type="text" class="form-control" id="buyer_fe_address" name="buyer_fe_address"
+                   value="{{ data.buyer_fe_address }}" placeholder="0009:98765432109876">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Billing Address (BT-0225) -->
+    <div class="custom-card mb-4">
+      <div class="card-header-gradient secondary" style="background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);">
+        <h5><i class="fas fa-file-invoice-dollar"></i> Adresse de facturation (BT-0225)</h5>
+      </div>
+      <div class="card-body-custom">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="billing_name" class="form-label">
+              <i class="fas fa-building me-1"></i> Nom / Destinataire
+            </label>
+            <input type="text" class="form-control" id="billing_name" name="billing_name"
+                   value="{{ data.billing_name }}" placeholder="Nom du destinataire de facturation">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="billing_street" class="form-label">
+              <i class="fas fa-map-marker-alt me-1"></i> Adresse de facturation
+            </label>
+            <input type="text" class="form-control" id="billing_street" name="billing_street"
+                   value="{{ data.billing_street }}" placeholder="789 Boulevard Facturation">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="billing_postal_code" class="form-label">
+              <i class="fas fa-mail-bulk me-1"></i> Code postal
+            </label>
+            <input type="text" class="form-control" id="billing_postal_code" name="billing_postal_code"
+                   value="{{ data.billing_postal_code }}" placeholder="13001">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="billing_city" class="form-label">
+              <i class="fas fa-city me-1"></i> Ville
+            </label>
+            <input type="text" class="form-control" id="billing_city" name="billing_city"
+                   value="{{ data.billing_city }}" placeholder="Marseille">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="billing_country" class="form-label">
+              <i class="fas fa-globe me-1"></i> Pays
+            </label>
+            <input type="text" class="form-control" id="billing_country" name="billing_country"
+                   value="{{ data.billing_country }}" placeholder="FR">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button type="submit" class="btn-gradient primary">
+        <i class="fas fa-save"></i> Enregistrer les modifications
+      </button>
+      <a href="{{ url_for('edit') }}" class="btn-gradient secondary">
+        <i class="fas fa-code"></i> Editer le XML brut
+      </a>
+    </div>
+  </form>
+
+  <!-- Additional Actions -->
+  <div class="custom-card mt-4">
+    <div class="card-header-gradient warning">
+      <h5><i class="fas fa-download"></i> Actions</h5>
+    </div>
+    <div class="card-body-custom">
+      <div class="d-flex flex-wrap gap-3">
+        <a href="{{ url_for('download_xml') }}" class="btn-gradient info">
+          <i class="fas fa-file-download"></i> Telecharger le XML
+        </a>
+        <form method="post" action="{{ url_for('build') }}" style="display: inline">
+          <button type="submit" class="btn-gradient success">
+            <i class="fas fa-file-pdf"></i> Generer le PDF mis a jour
+          </button>
+        </form>
+        <a href="{{ url_for('index') }}" class="btn-outline-custom">
+          <i class="fas fa-plus"></i> Nouveau fichier
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
